@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler('weather.log',encoding='utf-8'),logging.StreamHandler()])
+                    handlers=[logging.FileHandler('weather.log',encoding='utf-8-sig'),logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 def get_weather_coord(lat, lon, key):
@@ -15,6 +15,17 @@ def get_weather_coord(lat, lon, key):
         response = requests.get(url)
         response.raise_for_status()
         logger.debug('Успешно')
+        if 'main' not in data or 'weather' not in data:
+            print('Ошибка: API вернул некорректные данные')
+            exit(1)
+
+        if 'temp' not in data['main']:
+            data['main']['temp'] = 'N/A'
+
+        if isinstance(data['weather'][0]['description'], list):
+            condition = data['weather'][0]['description'][0]
+        else:
+            condition = data['weather'][0]['description']
         return response.json()
     except requests.exceptions.RequestException as error:
         logger.error(f'Ошибка при запросе API:{error}', exc_info=True)
@@ -61,12 +72,15 @@ except requests.exceptions.Timeout as e:
     logger.critical(f'Ошибка подключения {e}')
 
 data = get_weather_coord(config.lat, config.lon, config.key)
-filter_data = filter_weather_data(data)
 
+
+
+filter_data = filter_weather_data(data)
+conditions = data['weather'][0]['description'] if data.get('weather') else "Нет данных"
 if filter_data:
         print("Текущая погода:")
         print(f"Город: {filter_data['city']}")
-        print(f"Условия: {(filter_data['conditions'])}")
+        print(f"Условия: {(filter_data[0]['conditions'])}")
         print(f"Время запроса: {filter_data['timestamp']}")
         if filter_data['temp'] >= 0:
             print(f"Температура: {filter_data['temp']}°C")
