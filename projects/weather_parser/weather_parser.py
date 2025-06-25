@@ -35,9 +35,12 @@ filter_data = filter_weather_data(data)
 if filter_data:
         print("Текущая погода:")
         print(f"Город: {filter_data['city']}")
-        print(f"Температура: {filter_data['temp']}°C")
-        print(f"Условия: {', '.join(filter_data['conditions'])}")
+        print(f"Условия: {filter_data['conditions']}")
         print(f"Время запроса: {filter_data['timestamp']}")
+        if filter_data['temp'] >= 0:
+            print(f"Температура: {filter_data['temp']}°C")
+        else:
+            print(f'Температура минус {abs(filter_data['temp'])}')
 else:
     print("Не удалось обработать данные о погоде")
 
