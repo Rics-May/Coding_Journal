@@ -2,6 +2,8 @@ import json
 import requests
 import config
 import datetime
+
+
 def get_weather_coord(lat, lon, key):
     url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&lang=ru&appid={key}'
     try:
@@ -12,6 +14,7 @@ def get_weather_coord(lat, lon, key):
         print(f'ошибка при запросе API: {error}')
         return None
 
+
 def filter_weather_data(data):
     rezult = {
         'city': data.get('name', 'Неизвестно'),
@@ -21,9 +24,11 @@ def filter_weather_data(data):
     }
     return rezult
 
+
 def create_json(data, json_file):
     with open(json_file, 'w', encoding='utf-8-sig') as file:
         json.dump(data, file, indent=3,ensure_ascii=False)
+
 
 data = get_weather_coord(config.lat, config.lon, config.key)
 filter_data = filter_weather_data(data)
