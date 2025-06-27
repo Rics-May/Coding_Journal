@@ -6,10 +6,11 @@ logging.basicConfig(level=logging.INFO)
 
 def convert_csv_to_json(csv_file, json_file):
     try:
-        with open(csv_file, 'r', newline='',encoding='windows-1251') as file:
+        with (open(csv_file, 'r', newline='',encoding='windows-1251') as file):
             book_data = []
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
+                row['Оценка'] = float(row['Оценка'])
                 book_data.append(row)
             logging.info(f'Прочитано {len(book_data)} записей из CSV')
 
