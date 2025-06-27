@@ -73,8 +73,6 @@ except requests.exceptions.Timeout as e:
 
 data = get_weather_coord(config.lat, config.lon, config.key)
 
-
-
 filter_data = filter_weather_data(data)
 conditions = data['weather'][0]['description'] if data.get('weather') else "Нет данных"
 if filter_data:

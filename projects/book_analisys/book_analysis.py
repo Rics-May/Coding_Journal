@@ -11,4 +11,7 @@ print('\n=== Первые пять строк===')
 print(df.head())
 
 print('\n Базовая статистика')
-print()
+print(df['Оценка'].describe())
+
+avg_rating = df['Оценка'].mean()
+print(f'\n Средний рейтинг:{avg_rating:.2f}')
