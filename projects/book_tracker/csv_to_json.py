@@ -23,6 +23,6 @@ def convert_csv_to_json(csv_file, json_file):
         logging.error(f'Ошибка при конвертации {str(e)}')
 
 convert_csv_to_json('read_book.csv', 'read_book.json')
-
+convert_csv_to_json('Eve_Price_to_DS.csv', 'Eve_Price_to_DS.json')
 
 
